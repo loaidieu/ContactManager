@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.contactmanager.MainController"
-            fx:id="mainPane">
+<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.contactmanager.MainController">
    <center>
-      <TableView BorderPane.alignment="CENTER" fx:id="tableView">
+      <TableView fx:id="tableView" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn fx:id="columnFirstName" prefWidth="75.0" text="First Name" />
           <TableColumn fx:id="columnLastName" prefWidth="75.0" text="Last Name" />
@@ -21,16 +19,25 @@
       </TableView>
    </center>
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="Contacts">
-            <items>
-              <MenuItem fx:id="menuItemNew" mnemonicParsing="false" text="New" onAction="#showNewContactDialog"/>
-                  <MenuItem fx:id="menuItemEdit" mnemonicParsing="false" text="Edit" onAction="#showEditContactDialog"/>
-                  <MenuItem fx:id="menuItemDelete" mnemonicParsing="false" text="Delete" onAction="#deleteContact"/>
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
+       <HBox alignment="CENTER_LEFT" spacing="10">
+           <MenuBar>
+               <menus>
+                   <Menu mnemonicParsing="false" text="Contacts">
+                       <items>
+                           <MenuItem fx:id="menuItemNew" mnemonicParsing="false" onAction="#showNewContactDialog" text="New" />
+                           <MenuItem fx:id="menuItemEdit" mnemonicParsing="false" onAction="#showEditContactDialog" text="Edit" />
+                           <MenuItem fx:id="menuItemDelete" mnemonicParsing="false" onAction="#deleteContact" text="Delete" />
+                       </items>
+                   </Menu>
+               </menus>
+           </MenuBar>
+           <Pane HBox.hgrow="ALWAYS" />
+           <TextField fx:id="txtSearch" alignment="CENTER_RIGHT" prefWidth="200" promptText="Search by Name, Phone or Notes.">
+               <HBox.margin>
+                   <Insets bottom="5" right="5" top="5" />
+               </HBox.margin>
+           </TextField>
+       </HBox>
+
    </top>
 </BorderPane>

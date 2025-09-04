@@ -1,5 +1,8 @@
 package org.example.contactmanager;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -8,6 +11,7 @@ import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class MainController {
     @FXML
@@ -21,7 +25,10 @@ public class MainController {
     @FXML
     private TableColumn<Contact, String> columnNotes;
     @FXML
+    private TextField txtSearch;
+    @FXML
     private TableView tableView;
+    private FilteredList<Contact> filteredList;
 
     @FXML
     public void initialize(){
@@ -32,8 +39,44 @@ public class MainController {
         columnNotes.setCellValueFactory(cellData -> cellData.getValue().notesProperty());
         System.out.println("running");
         //Binding tableView with contact list
-        tableView.setItems(ContactData.getInstance().getContactList());
+        filteredList = new FilteredList<>(ContactData.getInstance().getContactList());
+        filteredList.setPredicate(new Predicate<Contact>() {
+            @Override
+            public boolean test(Contact contact) {
+                return true;
+            }
+        });
+        tableView.setItems(filteredList);
         tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        //Search Box text property listener
+        txtSearch.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                filteredList.setPredicate(new Predicate<Contact>() {
+                    @Override
+                    public boolean test(Contact contact) {
+                        if (txtSearch.getText().trim().equals("")){
+                            filteredList.setPredicate(new Predicate<Contact>() {
+                                @Override
+                                public boolean test(Contact contact) {
+                                    return true;
+                                }
+                            });
+                        }
+                        System.out.println("predicate");
+                        String t1_low = t1.toLowerCase();
+                        if (contact.getFirstName().toLowerCase().contains(t1_low) ||
+                            contact.getLastName().toLowerCase().contains(t1_low) ||
+                            contact.getPhoneNumber().toLowerCase().contains(t1_low) ||
+                            contact.getNotes().toLowerCase().contains(t1_low)){
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+            }
+        });
     }
 
     //menu
@@ -56,9 +99,10 @@ public class MainController {
         if (result.isPresent() && ((ButtonType)result.get()).equals(ButtonType.OK)){
             DialogController ctrl = loader.getController();
             Result res = ctrl.saveNewContact();
-            Alert messageBox = new Alert(Alert.AlertType.INFORMATION);
+            Alert messageBox = new Alert(Alert.AlertType.ERROR);
             messageBox.setTitle("Result on creating new Contact");
             messageBox.setContentText(res.getMessage());
+            messageBox.showAndWait();
         }
     }
 

@@ -14,6 +14,7 @@ import com.google.i18n.phonenumbers.NumberParseException;
 import javafx.scene.input.MouseEvent;
 
 public class DialogController {
+    private boolean isPhoneNumberValid = false;
     @FXML
     private TextField txtFirstName;
     @FXML
@@ -33,10 +34,12 @@ public class DialogController {
                     boolean isValid = phoneUtil.isValidNumber(phone);
                     if(!isValid){
                         txtPhoneNumber.setStyle("-fx-text-fill: red");
+                        isPhoneNumberValid = false;
                     }else{
                         txtPhoneNumber.setStyle("-fx-text-fill: black");
                         String formatted = phoneUtil.format(phone, PhoneNumberUtil.PhoneNumberFormat.NATIONAL);
                         txtPhoneNumber.setText(formatted);
+                        isPhoneNumberValid = true;
                     }
                 }catch(Exception e){
                     e.printStackTrace();
@@ -92,11 +95,11 @@ public class DialogController {
             sb.append("Last name is left empty.");
             valid = false;
         }
-        if(txtPhoneNumber.getText().trim().equals("")){
-            sb.append("First name is left empty.");
+        if(!isPhoneNumberValid){
+            sb.append("Phone number is invalid.");
             valid = false;
         }
         return new Result(valid, sb.toString());
     }
-    
+
 }
