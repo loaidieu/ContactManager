@@ -117,14 +117,14 @@ public class MainController {
             boolean success = ContactData.getInstance().deleteContact(contact);
             if(success){
                 Alert con = new Alert(Alert.AlertType.INFORMATION);
-                con.initOwner(confirm.getDialogPane().getScene().getWindow());
+                con.initOwner(mainPane.getScene().getWindow());
                 con.setTitle("Deleting a contact");
                 con.setContentText("Successfully deleting a contact.");
                 con.showAndWait();
             }
             else{
                 Alert con = new Alert(Alert.AlertType.INFORMATION);
-                con.initOwner(confirm.getDialogPane().getScene().getWindow());
+                con.initOwner(mainPane.getScene().getWindow());
                 con.setTitle("Deleting a contact");
                 con.setContentText("Unsuccessfully deleting a contact.");
                 con.showAndWait();
