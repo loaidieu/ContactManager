@@ -1,12 +1,17 @@
 package org.example.contactmanager;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.input.KeyEvent;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import com.google.i18n.phonenumbers.NumberParseException;
+import javafx.scene.input.MouseEvent;
 
 public class DialogController {
     @FXML
@@ -17,6 +22,28 @@ public class DialogController {
     private TextField txtPhoneNumber;
     @FXML
     private TextArea txtNotes;
+
+    @FXML
+    public void initialize(){
+        // set up  the focus listener for phonenumber textfield
+        txtPhoneNumber.textProperty().addListener((observableValue, aBoolean, t1) -> {
+                PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+                try{
+                    Phonenumber.PhoneNumber phone = phoneUtil.parse(txtPhoneNumber.getText(), "US");
+                    boolean isValid = phoneUtil.isValidNumber(phone);
+                    if(!isValid){
+                        txtPhoneNumber.setStyle("-fx-text-fill: red");
+                    }else{
+                        txtPhoneNumber.setStyle("-fx-text-fill: black");
+                        String formatted = phoneUtil.format(phone, PhoneNumberUtil.PhoneNumberFormat.NATIONAL);
+                        txtPhoneNumber.setText(formatted);
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+        });
+
+    }
 
     @FXML
     public Result saveNewContact(){
@@ -70,25 +97,6 @@ public class DialogController {
             valid = false;
         }
         return new Result(valid, sb.toString());
-    }
-
-    //phone number formater
-    public void onPhoneKeyReleased(KeyEvent e){
-        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
-        txtPhoneNumber.setStyle("-fx-text-fill: red");
-        try{
-            Phonenumber.PhoneNumber numberProto = phoneUtil.parse(txtPhoneNumber.getText(),"US");
-            boolean isValid = phoneUtil.isValidNumber(numberProto);
-            System.out.println("valid: " + isValid);
-            String formatted = phoneUtil.format(numberProto, PhoneNumberUtil.PhoneNumberFormat.NATIONAL);
-            System.out.println("Formatted : " + formatted);
-            if (isValid){
-                txtPhoneNumber.setStyle("-fx-text-fill: black");
-                txtPhoneNumber.setText(formatted);
-            }
-        }catch(NumberParseException ex){
-            ex.printStackTrace();
-        }
     }
     
 }
