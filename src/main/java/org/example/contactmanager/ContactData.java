@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Iterator;
 
 public class ContactData {
     private String fileName = "contact.txt";
@@ -38,6 +39,28 @@ public class ContactData {
             }
         if (br != null){
             br.close();
+        }
+    }
+
+    public boolean deleteContact(Contact c){
+        boolean result = getContactList().remove(c);
+        return result;
+    }
+
+    public void storeContacts() throws IOException{
+        Path path = Paths.get(fileName);
+        BufferedWriter bw = Files.newBufferedWriter(path);
+        try{
+            Iterator<Contact> iter = ContactData.getInstance().getContactList().iterator();
+            while(iter.hasNext()){
+                Contact c = iter.next();
+                bw.write(c.getFirstName() + " "+ c.getLastName() + "|" + c.getPhoneNumber() + "|" + c.getNotes());
+                bw.newLine();
+            }
+        }finally{
+            if (bw != null){
+                bw.close();
+            }
         }
     }
 }

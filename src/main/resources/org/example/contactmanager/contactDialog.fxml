@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.control.skin.SplitPaneSkin.Content?>
+<DialogPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.contactmanager.DialogController">
+    <content>
+      <GridPane maxHeight="150.0" prefHeight="100.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label fx:id="lblFirstName" text="First Name:" />
+            <Label fx:id="lblLastName" text="Last Name:" GridPane.rowIndex="1" />
+            <Label fx:id="lblPhoneNumber" text="Phone Number:" GridPane.rowIndex="2" />
+            <Label fx:id="lblNotes" text="Notes" GridPane.rowIndex="3" />
+            <TextField fx:id="txtFirstName" prefHeight="25.0" prefWidth="67.0" promptText="ex: John" GridPane.columnIndex="1" GridPane.columnSpan="2">
+               <GridPane.margin>
+                  <Insets left="10.0" right="50.0" />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="txtLastName" promptText="ex: Wick" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" right="50.0" />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="txtPhoneNumber" promptText="ex: 111-222-3333" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="10.0" right="50.0" />
+               </GridPane.margin>
+            </TextField>
+            <TextArea fx:id="txtNotes" prefHeight="200.0" prefWidth="200.0" promptText="ex: notes goes here" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.rowSpan="2">
+               <GridPane.margin>
+                  <Insets left="10.0" right="50.0" />
+               </GridPane.margin>
+            </TextArea>
+         </children>
+      </GridPane>
+   </content>
+</DialogPane>
