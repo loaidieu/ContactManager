@@ -36,6 +36,7 @@ public class MainController {
         tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
 
+    //menu
     @FXML
     public void showNewContactDialog(){
         Dialog<ButtonType> dialog = new Dialog<>();
@@ -131,4 +132,7 @@ public class MainController {
             }
         }
     }
+
+    //phone number text field property
+
 }

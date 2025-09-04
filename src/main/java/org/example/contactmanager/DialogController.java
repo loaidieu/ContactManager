@@ -3,6 +3,10 @@ package org.example.contactmanager;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
+import com.google.i18n.phonenumbers.NumberParseException;
 
 public class DialogController {
     @FXML
@@ -67,4 +71,24 @@ public class DialogController {
         }
         return new Result(valid, sb.toString());
     }
+
+    //phone number formater
+    public void onPhoneKeyReleased(KeyEvent e){
+        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+        txtPhoneNumber.setStyle("-fx-text-fill: red");
+        try{
+            Phonenumber.PhoneNumber numberProto = phoneUtil.parse(txtPhoneNumber.getText(),"US");
+            boolean isValid = phoneUtil.isValidNumber(numberProto);
+            System.out.println("valid: " + isValid);
+            String formatted = phoneUtil.format(numberProto, PhoneNumberUtil.PhoneNumberFormat.NATIONAL);
+            System.out.println("Formatted : " + formatted);
+            if (isValid){
+                txtPhoneNumber.setStyle("-fx-text-fill: black");
+                txtPhoneNumber.setText(formatted);
+            }
+        }catch(NumberParseException ex){
+            ex.printStackTrace();
+        }
+    }
+    
 }

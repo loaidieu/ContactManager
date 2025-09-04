@@ -37,7 +37,7 @@
                   <Insets left="10.0" right="50.0" />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="txtPhoneNumber" promptText="ex: 111-222-3333" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
+            <TextField fx:id="txtPhoneNumber" promptText="ex: 111-222-3333" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" onKeyReleased="#onPhoneKeyReleased">
                <GridPane.margin>
                   <Insets left="10.0" right="50.0" />
                </GridPane.margin>
