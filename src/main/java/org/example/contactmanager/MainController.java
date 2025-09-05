@@ -8,6 +8,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -37,7 +40,11 @@ public class MainController {
         columnLastName.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
         columnPhoneNumber.setCellValueFactory(cellData -> cellData.getValue().phoneNumberProperty());
         columnNotes.setCellValueFactory(cellData -> cellData.getValue().notesProperty());
-        System.out.println("running");
+        //adding highlighting for all columns
+        addHighlightMatch(columnFirstName, txtSearch);
+        addHighlightMatch(columnLastName, txtSearch);
+        addHighlightMatch(columnPhoneNumber, txtSearch);
+        addHighlightMatch(columnNotes, txtSearch);
         //Binding tableView with contact list
         filteredList = new FilteredList<>(ContactData.getInstance().getContactList());
         filteredList.setPredicate(new Predicate<Contact>() {
@@ -48,6 +55,7 @@ public class MainController {
         });
         tableView.setItems(filteredList);
         tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tableView.setFixedCellSize(21);
 
         //Search Box text property listener
         txtSearch.textProperty().addListener(new ChangeListener<String>() {
@@ -57,14 +65,8 @@ public class MainController {
                     @Override
                     public boolean test(Contact contact) {
                         if (txtSearch.getText().trim().equals("")){
-                            filteredList.setPredicate(new Predicate<Contact>() {
-                                @Override
-                                public boolean test(Contact contact) {
-                                    return true;
-                                }
-                            });
+                            return true;
                         }
-                        System.out.println("predicate");
                         String t1_low = t1.toLowerCase();
                         if (contact.getFirstName().toLowerCase().contains(t1_low) ||
                             contact.getLastName().toLowerCase().contains(t1_low) ||
@@ -76,6 +78,40 @@ public class MainController {
                     }
                 });
             }
+        });
+    }
+    //generic method to add the highlight to the match while searching
+    private void addHighlightMatch(TableColumn<Contact, String> column, TextField searchField){
+        column.setCellFactory(col -> new TableCell<Contact, String>(){
+            @Override
+            protected void updateItem(String item, boolean empty){
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    String search = searchField.getText().toLowerCase();
+
+                    if (!search.isEmpty() && item.toLowerCase().contains(search)) {
+                        int start = item.toLowerCase().indexOf(search);
+                        int end = start + search.length();
+
+                        Text before = new Text(item.substring(0, start));
+                        Label match = new Label(item.substring(start, end));
+                        Text after = new Text(item.substring(end));
+
+                        // style the highlighted part
+                        match.setStyle("-fx-font-weight: bold; -fx-background-color: yellow; -fx-text-fill: black; -fx-padding: 0; -fx-label-padding: 0");
+
+                        TextFlow flow = new TextFlow();
+                        flow.getChildren().addAll(before, match, after);
+                        setGraphic(flow);
+                        setText(null); // we must clear text if we use a graphic
+                    } else {
+                        // no match → just show normal text
+                        setText(item);
+                        setGraphic(null);
+            }}}
         });
     }
 

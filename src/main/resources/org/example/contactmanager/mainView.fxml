@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
 <BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.contactmanager.MainController">
@@ -32,11 +33,23 @@
                </menus>
            </MenuBar>
            <Pane HBox.hgrow="ALWAYS" />
-           <TextField fx:id="txtSearch" alignment="CENTER_RIGHT" prefWidth="200" promptText="Search by Name, Phone or Notes.">
-               <HBox.margin>
-                   <Insets bottom="5" right="5" top="5" />
-               </HBox.margin>
-           </TextField>
+           <StackPane>
+               <TextField fx:id="txtSearch" prefWidth="200" promptText="Search by Name, Phone or Notes.">
+                   <HBox.margin>
+                       <Insets bottom="5" right="5" top="5" />
+                   </HBox.margin>
+               </TextField>
+               <Label fx:id="lblFindIcon" StackPane.alignment="CENTER_RIGHT">
+                   <graphic>
+                       <ImageView fitHeight="16" fitWidth="16" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                               <Image url="@Find16.gif" />
+                           </image>
+                       </ImageView>
+                   </graphic>
+               </Label>
+           </StackPane>
+
        </HBox>
 
    </top>

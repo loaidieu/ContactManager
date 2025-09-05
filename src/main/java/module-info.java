@@ -2,6 +2,7 @@ module org.example.contactmanager {
     requires javafx.controls;
     requires javafx.fxml;
     requires libphonenumber;
+    requires java.xml;
 
 
     opens org.example.contactmanager to javafx.fxml;
