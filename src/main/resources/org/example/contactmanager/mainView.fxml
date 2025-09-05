@@ -53,4 +53,10 @@
        </HBox>
 
    </top>
+   <bottom>
+      <Label fx:id="lblStatus" text="Label" BorderPane.alignment="BOTTOM_LEFT">
+         <BorderPane.margin>
+            <Insets left="10.0" />
+         </BorderPane.margin></Label>
+   </bottom>
 </BorderPane>

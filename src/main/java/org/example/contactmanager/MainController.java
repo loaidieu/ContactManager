@@ -1,5 +1,6 @@
 package org.example.contactmanager;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
@@ -31,6 +32,8 @@ public class MainController {
     private TextField txtSearch;
     @FXML
     private TableView tableView;
+    @FXML
+    private Label lblStatus;
     private FilteredList<Contact> filteredList;
 
     @FXML
@@ -56,6 +59,7 @@ public class MainController {
         tableView.setItems(filteredList);
         tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         tableView.setFixedCellSize(21);
+        lblStatus.textProperty().bind(Bindings.size(filteredList).asString("number of contact: %d"));
 
         //Search Box text property listener
         txtSearch.textProperty().addListener(new ChangeListener<String>() {
@@ -65,6 +69,7 @@ public class MainController {
                     @Override
                     public boolean test(Contact contact) {
                         if (txtSearch.getText().trim().equals("")){
+                            //lblStatus.setText(filteredList.size() + 1 + " contacts" );
                             return true;
                         }
                         String t1_low = t1.toLowerCase();
@@ -72,6 +77,7 @@ public class MainController {
                             contact.getLastName().toLowerCase().contains(t1_low) ||
                             contact.getPhoneNumber().toLowerCase().contains(t1_low) ||
                             contact.getNotes().toLowerCase().contains(t1_low)){
+                            //lblStatus.setText(filteredList.size() + 1 + " contacts");
                             return true;
                         }
                         return false;
