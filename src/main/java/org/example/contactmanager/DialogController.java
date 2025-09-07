@@ -52,8 +52,8 @@ public class DialogController {
     public Result saveNewContact(){
         Result res = checkInput();
         if(res.isSuccessful()){
-            ContactData.getInstance().getContactList().add(new Contact(txtFirstName.getText().trim()
-            , txtLastName.getText().trim(), txtPhoneNumber.getText().trim(), txtNotes.getText().trim()));
+            CommandManager.getInstance().execute(new AddContactCommand(new Contact(txtFirstName.getText().trim()
+                    , txtLastName.getText().trim(), txtPhoneNumber.getText().trim(), txtNotes.getText().trim())));
             return new Result(true, "sucessfully created new contact.");
         }
         else{
@@ -65,10 +65,11 @@ public class DialogController {
     public Result saveEditContact(Contact contact){
         Result res = checkInput();
         if(res.isSuccessful()){
-            contact.setFirstName(txtFirstName.getText());
-            contact.setLastName(txtLastName.getText());
-            contact.setPhoneNumber(txtPhoneNumber.getText());
-            contact.setNotes(txtNotes.getText());
+            String fn = txtFirstName.getText();
+            String ln = txtLastName.getText();
+            String phone = txtPhoneNumber.getText();
+            String notes = txtNotes.getText();
+            CommandManager.getInstance().execute(new EditContactCommand(contact, fn, ln, phone, notes));
             return new Result(true, "Successfully edited a contact.");
         }
         else{

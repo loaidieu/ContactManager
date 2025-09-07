@@ -25,12 +25,24 @@
                <menus>
                    <Menu mnemonicParsing="false" text="Contacts">
                        <items>
-                           <MenuItem fx:id="menuItemNew" mnemonicParsing="false" onAction="#showNewContactDialog" text="New" />
-                           <MenuItem fx:id="menuItemEdit" mnemonicParsing="false" onAction="#showEditContactDialog" text="Edit" />
-                           <MenuItem fx:id="menuItemDelete" mnemonicParsing="false" onAction="#deleteContact" text="Delete" />
+                           <MenuItem fx:id="menuItemNew" mnemonicParsing="false" text="New" onAction="#showNewContactDialog"/>
+                           <MenuItem fx:id="menuItemEdit" mnemonicParsing="false" text="Edit" onAction="#showEditContactDialog"/>
+                           <MenuItem fx:id="menuItemDelete" mnemonicParsing="false" text="Delete" onAction="#deleteContact"/>
                        </items>
                    </Menu>
+               <Menu mnemonicParsing="false" text="Edit">
+                 <items>
+                   <MenuItem fx:id="menuItemUndo" mnemonicParsing="false" text="Undo" />
+                     <MenuItem fx:id="menuItemRedo" mnemonicParsing="false" text="Redo" />
+                 </items>
+               </Menu>
                </menus>
+            <HBox.margin>
+               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </HBox.margin>
+            <opaqueInsets>
+               <Insets />
+            </opaqueInsets>
            </MenuBar>
            <Pane HBox.hgrow="ALWAYS" />
            <StackPane>

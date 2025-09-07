@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
 
-public class ContactData {
+public class ContactData{
     private String fileName = "contact.txt";
     private ObservableList<Contact> contactList = FXCollections.observableArrayList();;
     private static ContactData instance = new ContactData();
@@ -43,7 +43,8 @@ public class ContactData {
     }
 
     public boolean deleteContact(Contact c){
-        boolean result = getContactList().remove(c);
+        boolean result = getContactList().contains(c);
+        CommandManager.getInstance().execute(new DeleteContactCommand(c));
         return result;
     }
 

@@ -4,6 +4,8 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -33,11 +35,35 @@ public class MainController {
     @FXML
     private TableView tableView;
     @FXML
+    private MenuItem menuItemNew;
+    @FXML
+    private MenuItem menuItemEdit;
+    @FXML
+    private MenuItem menuItemDelete;
+    @FXML
+    private MenuItem menuItemUndo;
+    @FXML
+    private MenuItem menuItemRedo;
+    @FXML
     private Label lblStatus;
     private FilteredList<Contact> filteredList;
 
     @FXML
     public void initialize(){
+        //Binding Undo and Redo
+        menuItemUndo.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                CommandManager.getInstance().undo();
+            }
+        });
+        menuItemRedo.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                CommandManager.getInstance().redo();
+            }
+        });
+
         //Binding the column with model properties
         columnFirstName.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
         columnLastName.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
@@ -141,7 +167,7 @@ public class MainController {
         if (result.isPresent() && ((ButtonType)result.get()).equals(ButtonType.OK)){
             DialogController ctrl = loader.getController();
             Result res = ctrl.saveNewContact();
-            Alert messageBox = new Alert(Alert.AlertType.ERROR);
+            Alert messageBox = new Alert(Alert.AlertType.INFORMATION);
             messageBox.setTitle("Result on creating new Contact");
             messageBox.setContentText(res.getMessage());
             messageBox.showAndWait();
