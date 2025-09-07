@@ -8,8 +8,10 @@ public class Contact {
     private StringProperty lastName = new SimpleStringProperty();
     private StringProperty phoneNumber = new SimpleStringProperty();
     private StringProperty notes = new SimpleStringProperty();
+    private String imagePath = "";
 
-    public Contact(String firstName, String lastName, String phoneNumber, String notes) {
+    public Contact(String imagePath, String firstName, String lastName, String phoneNumber, String notes) {
+        this.imagePath = imagePath;
         this.firstName.setValue(firstName);
         this.lastName.setValue(lastName);
         this.phoneNumber.setValue(phoneNumber);
@@ -62,6 +64,14 @@ public class Contact {
 
     public void setNotes(String notes) {
         this.notes.set(notes);
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     @Override

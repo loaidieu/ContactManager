@@ -1,6 +1,0 @@
-Donald Duck|123-555-1234|Quack!
-Lady Bug|438-505-9999|What's up Doc. testing the editting.
-Wite E.|123-555-9999|I thought i saw a Road Runner!
-Road Runner|123-555-2222|Meep-meep!
-Linda Ho|(438) 506-2603|she is generous and innocent.
-Dieu Lieu|438-505-9563|he is getting back on his feet.

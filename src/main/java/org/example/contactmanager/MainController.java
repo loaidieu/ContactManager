@@ -10,10 +10,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -30,6 +33,8 @@ public class MainController {
     private TableColumn<Contact, String> columnPhoneNumber;
     @FXML
     private TableColumn<Contact, String> columnNotes;
+    @FXML
+    private TableColumn<Contact, Image> columnPhoto;
     @FXML
     private TextField txtSearch;
     @FXML
@@ -69,6 +74,13 @@ public class MainController {
         columnLastName.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
         columnPhoneNumber.setCellValueFactory(cellData -> cellData.getValue().phoneNumberProperty());
         columnNotes.setCellValueFactory(cellData -> cellData.getValue().notesProperty());
+        columnPhoto.setCellFactory(new Callback<TableColumn<Contact, Image>, TableCell<Contact, Image>>() {
+            @Override
+            public TableCell<Contact, Image> call(TableColumn<Contact, Image> contactImageTableColumn) {
+
+                return null;
+            }
+        });
         //adding highlighting for all columns
         addHighlightMatch(columnFirstName, txtSearch);
         addHighlightMatch(columnLastName, txtSearch);

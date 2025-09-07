@@ -52,8 +52,8 @@ public class DialogController {
     public Result saveNewContact(){
         Result res = checkInput();
         if(res.isSuccessful()){
-            CommandManager.getInstance().execute(new AddContactCommand(new Contact(txtFirstName.getText().trim()
-                    , txtLastName.getText().trim(), txtPhoneNumber.getText().trim(), txtNotes.getText().trim())));
+            //CommandManager.getInstance().execute(new AddContactCommand(new Contact(txtFirstName.getText().trim()
+            //        , txtLastName.getText().trim(), txtPhoneNumber.getText().trim(), txtNotes.getText().trim())));
             return new Result(true, "sucessfully created new contact.");
         }
         else{

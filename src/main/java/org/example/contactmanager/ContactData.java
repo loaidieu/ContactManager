@@ -33,7 +33,7 @@ public class ContactData{
             while(line != null) {
                 String[] pieces = line.split("\\|");
                 String[] names = pieces[0].split(" ");
-                Contact c = new Contact(names[0], names[1], pieces[1], pieces[2]);
+                Contact c = new Contact(pieces[3],names[0], names[1], pieces[1], pieces[2]);
                 contactList.add(c);
                 line = br.readLine();
             }
