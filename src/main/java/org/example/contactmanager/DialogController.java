@@ -2,16 +2,18 @@ package org.example.contactmanager;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import com.google.i18n.phonenumbers.NumberParseException;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
+
+import java.io.File;
 
 public class DialogController {
     private boolean isPhoneNumberValid = false;
@@ -23,9 +25,22 @@ public class DialogController {
     private TextField txtPhoneNumber;
     @FXML
     private TextArea txtNotes;
+    @FXML
+    private Button btnLoadImage;
+    @FXML
+    private DialogPane dialogPane;
 
     @FXML
     public void initialize(){
+        //Add on action button load image
+        btnLoadImage.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                FileChooser chooser = new FileChooser();
+                chooser.setTitle("Image Chooser");
+                File file = chooser.showOpenDialog(dialogPane.getScene().getWindow());
+            }
+        });
         // set up  the focus listener for phonenumber textfield
         txtPhoneNumber.textProperty().addListener((observableValue, aBoolean, t1) -> {
                 PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
@@ -53,7 +68,7 @@ public class DialogController {
         Result res = checkInput();
         if(res.isSuccessful()){
             //CommandManager.getInstance().execute(new AddContactCommand(new Contact(txtFirstName.getText().trim()
-            //        , txtLastName.getText().trim(), txtPhoneNumber.getText().trim(), txtNotes.getText().trim())));
+              //      , txtLastName.getText().trim(), txtPhoneNumber.getText().trim(), txtNotes.getText().trim())));
             return new Result(true, "sucessfully created new contact.");
         }
         else{

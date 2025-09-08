@@ -55,7 +55,7 @@ public class ContactData{
             Iterator<Contact> iter = ContactData.getInstance().getContactList().iterator();
             while(iter.hasNext()){
                 Contact c = iter.next();
-                bw.write(c.getFirstName() + " "+ c.getLastName() + "|" + c.getPhoneNumber() + "|" + c.getNotes());
+                bw.write(c.getFirstName() + " "+ c.getLastName() + "|" + c.getPhoneNumber() + "|" + c.getNotes() + "|"+ c.getImagePath());
                 bw.newLine();
             }
         }finally{

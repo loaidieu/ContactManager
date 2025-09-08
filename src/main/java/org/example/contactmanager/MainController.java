@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public class MainController {
+    private final String DEFAULTIMAGEPATH = "@defaultAvatar.PNG";
     @FXML
     private BorderPane mainPane;
     @FXML
@@ -34,7 +35,7 @@ public class MainController {
     @FXML
     private TableColumn<Contact, String> columnNotes;
     @FXML
-    private TableColumn<Contact, Image> columnPhoto;
+    private TableColumn<Contact, String> columnPhoto;
     @FXML
     private TextField txtSearch;
     @FXML
@@ -74,11 +75,25 @@ public class MainController {
         columnLastName.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
         columnPhoneNumber.setCellValueFactory(cellData -> cellData.getValue().phoneNumberProperty());
         columnNotes.setCellValueFactory(cellData -> cellData.getValue().notesProperty());
-        columnPhoto.setCellFactory(new Callback<TableColumn<Contact, Image>, TableCell<Contact, Image>>() {
+        columnPhoto.setCellValueFactory(cellData -> cellData.getValue().imagePathProperty());
+        columnPhoto.setCellFactory(new Callback<TableColumn<Contact, String>, TableCell<Contact, String>>() {
             @Override
-            public TableCell<Contact, Image> call(TableColumn<Contact, Image> contactImageTableColumn) {
+            public TableCell<Contact, String> call(TableColumn<Contact, String> contactImageTableColumn) {
+                return new TableCell<>(){
+                    private ImageView imageView = new ImageView();
 
-                return null;
+                    @Override
+                    protected void updateItem(String imagePath, boolean b) {
+                        super.updateItem(imagePath, b);
+                        if(b || imagePath.equals("")){
+                            setGraphic(null);
+                        }
+                        else{
+                            System.out.println(imagePath);
+                            imageView.setImage(new Image(getClass().getResource(imagePath).toExternalForm()));
+                        }
+                    }
+                };
             }
         });
         //adding highlighting for all columns
