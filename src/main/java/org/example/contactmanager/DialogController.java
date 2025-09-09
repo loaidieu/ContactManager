@@ -1,11 +1,15 @@
 package org.example.contactmanager;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
@@ -14,6 +18,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.nio.file.*;
 
 public class DialogController {
     private boolean isPhoneNumberValid = false;
@@ -29,6 +35,10 @@ public class DialogController {
     private Button btnLoadImage;
     @FXML
     private DialogPane dialogPane;
+    @FXML
+    private ImageView lblImageView;
+
+    public static final String ABSOLUTE_PATH = "C:/Users/loaid/IdeaProjects/ContactManager/src/main/resources/org/example/contactmanager/Images/";
 
     @FXML
     public void initialize(){
@@ -39,6 +49,14 @@ public class DialogController {
                 FileChooser chooser = new FileChooser();
                 chooser.setTitle("Image Chooser");
                 File file = chooser.showOpenDialog(dialogPane.getScene().getWindow());
+                try{
+                    Files.copy(Paths.get(file.getPath()), Paths.get(ABSOLUTE_PATH+ file.getName()), StandardCopyOption.REPLACE_EXISTING);
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                    System.out.println("Can't load image.");
+                }
+                lblImageView.setImage(new Image(((File)(new File(ABSOLUTE_PATH + file.getName()))).toURI().toString()));
             }
         });
         // set up  the focus listener for phonenumber textfield
@@ -67,8 +85,10 @@ public class DialogController {
     public Result saveNewContact(){
         Result res = checkInput();
         if(res.isSuccessful()){
-            //CommandManager.getInstance().execute(new AddContactCommand(new Contact(txtFirstName.getText().trim()
-              //      , txtLastName.getText().trim(), txtPhoneNumber.getText().trim(), txtNotes.getText().trim())));
+            Path path = Paths.get(lblImageView.getImage().getUrl());
+            File f = new File(path.toUri());
+            CommandManager.getInstance().execute(new AddContactCommand(new Contact(f.getName(), txtFirstName.getText().trim()
+                    , txtLastName.getText().trim(), txtPhoneNumber.getText().trim(), txtNotes.getText().trim())));
             return new Result(true, "sucessfully created new contact.");
         }
         else{
@@ -77,14 +97,15 @@ public class DialogController {
     }
 
     @FXML
-    public Result saveEditContact(Contact contact){
+    public Result saveEditContact(Contact contact) throws URISyntaxException {
         Result res = checkInput();
         if(res.isSuccessful()){
             String fn = txtFirstName.getText();
             String ln = txtLastName.getText();
             String phone = txtPhoneNumber.getText();
             String notes = txtNotes.getText();
-            CommandManager.getInstance().execute(new EditContactCommand(contact, fn, ln, phone, notes));
+            File f = new File(new java.net.URI(lblImageView.getImage().getUrl()));
+            CommandManager.getInstance().execute(new EditContactCommand(contact, f.getName(), fn, ln, phone, notes));
             return new Result(true, "Successfully edited a contact.");
         }
         else{
@@ -98,6 +119,14 @@ public class DialogController {
         txtLastName.setText(contact.getLastName());
         txtPhoneNumber.setText(contact.getPhoneNumber());
         txtNotes.setText(contact.getNotes());
+        try{
+            lblImageView.setImage(new Image(new File(DialogController.ABSOLUTE_PATH + contact.getImageName()).toURI().toString()));
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            System.out.println("cannot load image");
+        }
+
     }
 
     private Result checkInput(){

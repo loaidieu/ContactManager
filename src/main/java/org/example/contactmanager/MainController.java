@@ -18,12 +18,13 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Callback;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Optional;
 import java.util.function.Predicate;
 
 public class MainController {
-    private final String DEFAULTIMAGEPATH = "@defaultAvatar.PNG";
     @FXML
     private BorderPane mainPane;
     @FXML
@@ -75,7 +76,7 @@ public class MainController {
         columnLastName.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
         columnPhoneNumber.setCellValueFactory(cellData -> cellData.getValue().phoneNumberProperty());
         columnNotes.setCellValueFactory(cellData -> cellData.getValue().notesProperty());
-        columnPhoto.setCellValueFactory(cellData -> cellData.getValue().imagePathProperty());
+        columnPhoto.setCellValueFactory(cellData -> cellData.getValue().imageNameProperty());
         columnPhoto.setCellFactory(new Callback<TableColumn<Contact, String>, TableCell<Contact, String>>() {
             @Override
             public TableCell<Contact, String> call(TableColumn<Contact, String> contactImageTableColumn) {
@@ -83,14 +84,23 @@ public class MainController {
                     private ImageView imageView = new ImageView();
 
                     @Override
-                    protected void updateItem(String imagePath, boolean b) {
-                        super.updateItem(imagePath, b);
-                        if(b || imagePath.equals("")){
+                    protected void updateItem(String imageName, boolean b) {
+                        super.updateItem(imageName, b);
+                        if(b || imageName.equals("")){
                             setGraphic(null);
                         }
                         else{
-                            System.out.println(imagePath);
-                            imageView.setImage(new Image(getClass().getResource(imagePath).toExternalForm()));
+                            try{
+                                imageView.setImage(new Image(new File(DialogController.ABSOLUTE_PATH + imageName).toURI().toString()));
+                                imageView.setFitHeight(50);
+                                imageView.setFitWidth(50);
+                                setGraphic(imageView);
+                                System.out.println(DialogController.ABSOLUTE_PATH + imageName);
+                            }
+                            catch(Exception e){
+                                e.printStackTrace();
+                                System.out.println("cannot load image" + imageName);
+                            }
                         }
                     }
                 };
@@ -111,7 +121,7 @@ public class MainController {
         });
         tableView.setItems(filteredList);
         tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        tableView.setFixedCellSize(21);
+        tableView.setFixedCellSize(50);
         lblStatus.textProperty().bind(Bindings.size(filteredList).asString("number of contact: %d"));
 
         //Search Box text property listener
@@ -201,7 +211,7 @@ public class MainController {
         }
     }
 
-    public void showEditContactDialog(){
+    public void showEditContactDialog() throws URISyntaxException {
         Contact contact = (Contact)tableView.getSelectionModel().getSelectedItem();
         if (contact == null)
         {

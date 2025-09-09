@@ -9,8 +9,8 @@
    <center>
       <TableView fx:id="tableView" BorderPane.alignment="CENTER">
         <columns>
-            <TableColumn fx:id="columnPhoto" prefWidth="79.0" text="Photo" />
-          <TableColumn fx:id="columnFirstName" prefWidth="161.0" text="First Name" />
+            <TableColumn fx:id="columnPhoto" maxWidth="50.0" minWidth="50.0" prefWidth="50" text="Photo" />
+          <TableColumn fx:id="columnFirstName" prefWidth="100.0" text="First Name" />
           <TableColumn fx:id="columnLastName" prefWidth="75.0" text="Last Name" />
             <TableColumn fx:id="columnPhoneNumber" prefWidth="75.0" text="Phone Number" />
             <TableColumn fx:id="columnNotes" prefWidth="75.0" text="Notes" />
