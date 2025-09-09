@@ -161,7 +161,8 @@ public class MainController {
                 Dragboard db = event.getDragboard();
                 int draggedIndex = Integer.parseInt(db.getString());
                 int droppedIndex = tr.getIndex();
-                Collections.swap(ContactData.getInstance().getContactList(), draggedIndex, droppedIndex);
+                ICommand command = new SwapCommand(draggedIndex, droppedIndex);
+                CommandManager.getInstance().execute(command);
                 event.setDropCompleted(true);
                 event.consume();
                 System.out.println("drop:"+tr.getIndex());
