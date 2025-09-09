@@ -12,15 +12,21 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Callback;
+import jdk.swing.interop.SwingInterOpUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -119,9 +125,54 @@ public class MainController {
                 return true;
             }
         });
+        // Table view property
         tableView.setItems(filteredList);
         tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         tableView.setFixedCellSize(50);
+
+        //table row drag property
+        tableView.setRowFactory(tv -> {
+            TableRow<Contact> tr = new TableRow<>()
+                    ;
+            tr.setOnDragDetected(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if(!tr.isEmpty()){
+                        Dragboard db = tr.startDragAndDrop(TransferMode.MOVE);
+                        ClipboardContent cc = new ClipboardContent();
+                        cc.putString(String.valueOf(tr.getIndex()));
+                        db.setContent(cc);
+                        tr.setOpacity(0.3);
+                        mouseEvent.consume();
+                        System.out.println("detected:"+tr.getIndex());
+                    }
+                }
+            });
+            tr.setOnDragOver(event -> {
+                Dragboard db = event.getDragboard();
+                if (event.getDragboard().hasString()){
+                    event.acceptTransferModes(TransferMode.MOVE);
+                    System.out.println("over:"+tr.getIndex());
+                }
+                event.consume();
+
+            });
+            tr.setOnDragDropped(event -> {
+                Dragboard db = event.getDragboard();
+                int draggedIndex = Integer.parseInt(db.getString());
+                int droppedIndex = tr.getIndex();
+                Collections.swap(ContactData.getInstance().getContactList(), draggedIndex, droppedIndex);
+                event.setDropCompleted(true);
+                event.consume();
+                System.out.println("drop:"+tr.getIndex());
+            });
+            tr.setOnDragDone(event ->{
+                tr.setOpacity(1);
+            });
+            return tr;
+        });
+
+        //label status showing the total number of contacts in the current show in table view
         lblStatus.textProperty().bind(Bindings.size(filteredList).asString("number of contact: %d"));
 
         //Search Box text property listener

@@ -15,7 +15,6 @@ public class ContactData{
     private String fileName = "contact.txt";
     private ObservableList<Contact> contactList = FXCollections.observableArrayList();;
     private static ContactData instance = new ContactData();
-
     private ContactData(){}
 
     public static ContactData getInstance(){
