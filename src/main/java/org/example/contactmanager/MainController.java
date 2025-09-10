@@ -8,10 +8,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
@@ -142,6 +145,10 @@ public class MainController {
                         ClipboardContent cc = new ClipboardContent();
                         cc.putString(String.valueOf(tr.getIndex()));
                         db.setContent(cc);
+                        SnapshotParameters snap = new SnapshotParameters();
+                        snap .setFill(Color.TRANSPARENT);
+                        WritableImage snapshot = tr.snapshot(snap, null);
+                        db.setDragView(snapshot, mouseEvent.getX(), mouseEvent.getY());
                         tr.setOpacity(0.3);
                         mouseEvent.consume();
                         System.out.println("detected:"+tr.getIndex());
@@ -169,6 +176,7 @@ public class MainController {
             });
             tr.setOnDragDone(event ->{
                 tr.setOpacity(1);
+                tr.setCursor(Cursor.DEFAULT);
             });
             return tr;
         });
